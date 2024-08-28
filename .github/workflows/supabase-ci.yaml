@@ -1,0 +1,23 @@
+name: Supabase CI
+
+on:
+  pull_request:
+    paths:
+      - 'supabase/**'
+  workflow_dispatch:
+    paths:
+      - 'supabase/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest 
+
+      - name: Start Supabase local development setup
+        run: supabase start
+        working-directory: supabase

@@ -1,0 +1,33 @@
+name: Deploy Migrations And Edge Functions to Staging
+
+on:
+  push:
+    branches:
+      - staging
+    paths:
+      - "supabase/**"
+  workflow_dispatch:
+    paths:
+      - "supabase/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      STAGING_PROJECT_ID: zclcuqlpduwctwmnfehr
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - run: |
+          supabase link --project-ref $STAGING_PROJECT_ID
+          supabase functions deploy
+          supabase db push
+        working-directory: supabase

@@ -1,0 +1,20 @@
+name: Typecheck CI Supabase 
+
+on: 
+  pull_request:
+    paths:
+      - 'supabase/**'
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: typecheck supabase
+        run: deno check --import-map=functions/import_map.json functions/**/*.ts
+        working-directory: supabase

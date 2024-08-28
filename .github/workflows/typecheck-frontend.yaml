@@ -1,0 +1,16 @@
+name: Typecheck CI Frontend
+
+on:
+  pull_request:
+    paths:
+      - "frontend/**"
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: typecheck frontend
+        run: npm install && npm run typecheck
+        working-directory: frontend
